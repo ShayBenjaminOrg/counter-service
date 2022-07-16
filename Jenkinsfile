@@ -1,5 +1,8 @@
 pipeline {
     agent { node { label 'jenkins-agent' } }
+    environment {
+        DOCKERHUB_CREDENTIALS=credentials('DockerhubCreds')
+    }
     stages {
         stage('Clone the repo') {
             steps {
@@ -15,13 +18,23 @@ pipeline {
                 sh 'whoami'
                 sh 'pwd'
                 echo 'connect to remote host and pull down the latest version'
-                docker image build -t flask_docker .
+                sh 'docker image build -t shayben/counter-service:v1 .'
                 echo 'image built'
-                sh 'docker images'
                 
 
                 //sh 'ssh ec2-user@10.0.1.197 touch /var/www/html/index_pipe.html'
                 //sh 'ssh ec2-user@10.0.1.139 sudo git -C /var/www/html pull'
+            }
+        }
+        stage("verify dockers") {
+            steps {
+                sh 'docker images'
+            }
+        }
+        stage("push to DockerHub") {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push shayben/counter-service:v1'
             }
         }
         stage('Deploy the image') {
@@ -39,6 +52,11 @@ pipeline {
                 echo 'Check website is up'
                 //sh 'curl -Is 10.0.1.197 | head -n 1'
             }
+        }
+    }
+    post {
+        always {
+            sh 'docker logout'
         }
     }
 }
