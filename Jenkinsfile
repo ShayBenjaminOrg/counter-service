@@ -17,8 +17,9 @@ pipeline {
                 //sh 'sudo su ec2-user'
                 sh 'whoami'
                 sh 'pwd'
+                sh 'ls -la'
                 echo 'connect to remote host and pull down the latest version'
-                sh 'docker image build -t shayben/counter-service:v1 .'
+                sh 'podman image build -t shayben/counter-service:v1 .'
                 echo 'image built'
                 
 
@@ -28,13 +29,13 @@ pipeline {
         }
         stage("verify dockers") {
             steps {
-                sh 'docker images'
+                sh 'podman images'
             }
         }
         stage("push to DockerHub") {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push shayben/counter-service:v1'
+                sh 'podman push shayben/counter-service:v1'
             }
         }
         stage('Deploy the image') {
