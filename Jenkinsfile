@@ -15,6 +15,7 @@ pipeline {
         stage('Build the image') {
             steps {
                 //sh 'sudo su ec2-user'
+                sh 'sleep 300'
                 sh 'docker --version'
                 sh 'whoami'
                 sh 'pwd'
