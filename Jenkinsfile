@@ -37,12 +37,12 @@ pipeline {
                 //sh 'ssh ec2-user@10.0.1.139 sudo git -C /var/www/html pull'
             }
         }
-        stage("verify dockers") {
+        stage('verify dockers') {
             steps {
                 sh 'docker images'
             }
         }
-        stage("push to DockerHub") {
+        stage('push to DockerHub') {
             steps {
                 withCredentials([
                     usernamePassword(
@@ -54,7 +54,7 @@ pipeline {
                         echo '${DOCKERHUB_CREDENTIALS_USR}'
                         echo '${USERNAME}'
                         echo '${PASS}'
-                        sh "docker login -u ${USERNAME} -p ${PASS} && docker push shayben/counter-service:v1"
+                        sh 'docker login -u ${USERNAME} -p ${PASS} && docker push shayben/counter-service:v1'
                 }
             }
         }
@@ -65,10 +65,10 @@ pipeline {
                                     passwordVariable: 'PASS', usernameVariable: 'USERNAME')]) {
                      sh 'whoami'
                      sh 'pwd'
-                     sh "docker login -u ${USERNAME} -p ${PASS} && docker push shayben/counter-service:v1"
+                     sh 'docker login -u ${USERNAME} -p ${PASS} && docker push shayben/counter-service:v1'
                      
                 }
-                docker run -u 0 --name counter-service --rm -p 80:80 -d shayben/counter-service:v1"               
+                sh 'docker run -u 0 --name counter-service --rm -p 80:80 -d shayben/counter-service:v1'
                 echo 'connect to remote host and pull down the latest version'
                 //sh 'ssh ec2-user@10.0.1.197 touch /var/www/html/index_pipe.html'
                 //sh 'ssh ec2-user@10.0.1.139 sudo git -C /var/www/html pull'
