@@ -32,7 +32,7 @@ pipeline {
         }
         stage("verify dockers") {
             steps {
-                sh 'podman images'
+                sh 'docker images'
             }
         }
         stage("push to DockerHub") {
