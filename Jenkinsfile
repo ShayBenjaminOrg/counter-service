@@ -2,7 +2,7 @@ pipeline {
     //agent { node { label 'agent-docker' } }
     agent any
     environment {
-        //DOCKERHUB_CREDENTIALS=credentials('DockerhubCreds')
+        DOCKERHUB_CREDENTIALS=credentials('DockerhubCreds')
     }
     parameters { string description: 'Choose the branch to build', name: 'Branch', trim: true }
     
