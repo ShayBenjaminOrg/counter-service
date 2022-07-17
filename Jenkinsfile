@@ -4,13 +4,20 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS=credentials('DockerhubCreds')
     }
+    parameters { string description: 'Choose the branch to build', name: 'Branch', trim: true }
+    
     stages {
         stage('Clone the repo') {
             steps {
                 sh 'whoami'
                 echo 'clone the repo'
                 sh 'rm -fr counter-service'
-                sh 'git clone https://github.com/ShayBenjaminOrg/counter-service.git'
+                checkout([
+                    $class: 'GitSCM', 
+                    branches: [[name: '*/${Branch}']], 
+                    extensions: [], 
+                    userRemoteConfigs: [[url: 'https://github.com/ShayBenjaminOrg/counter-service.git']]
+                ])
             }
         }
         stage('Build the image') {
@@ -37,8 +44,18 @@ pipeline {
         }
         stage("push to DockerHub") {
             steps {
-                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push shayben/counter-service:v1'
+                withCredentials([
+                    usernamePassword(
+                        credentialsId: 'DockerhubCreds', 
+                        passwordVariable: 'PASS', 
+                        usernameVariable: 'USERNAME')]) {
+                    
+                        echo '$DOCKERHUB_CREDENTIALS_PSW'
+                        echo '$OCKERHUB_CREDENTIALS_USR'
+                        echo '${USERNAME}'
+                        echo '${PASS}'
+                        sh "docker login -u ${USERNAME} -p ${PASS} && docker push shayben/counter-service:v1"
+                }
             }
         }
         stage('Deploy the image') {
