@@ -65,10 +65,11 @@ pipeline {
                                     passwordVariable: 'PASS', usernameVariable: 'USERNAME')]) {
                      sh 'whoami'
                      sh 'pwd'
-                     sh 'docker login -u ${USERNAME} -p ${PASS} && docker push shayben/counter-service:v1'
+                     sh 'docker login -u ${USERNAME} -p ${PASS} && docker pull shayben/counter-service:v1'
+                     sh 'docker run -u 0 --name counter-service --rm -p 80:5000 -d shayben/counter-service:v1'
                      
                 }
-                sh 'docker run -u 0 --name counter-service --rm -p 80:80 -d shayben/counter-service:v1'
+                
                 echo 'connect to remote host and pull down the latest version'
                 //sh 'ssh ec2-user@10.0.1.197 touch /var/www/html/index_pipe.html'
                 //sh 'ssh ec2-user@10.0.1.139 sudo git -C /var/www/html pull'
@@ -77,7 +78,7 @@ pipeline {
         stage('Check website is up') {
             steps {
                 echo 'Check website is up'
-                sh 'curl -Is ec2-54-93-101-39.eu-central-1.compute.amazonaws.com | head -n 1'
+                sh 'curl -Is ec2-54-93-101-39.eu-central-1.compute.amazonaws.com'
             }
         }
     }
