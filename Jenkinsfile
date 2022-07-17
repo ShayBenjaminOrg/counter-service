@@ -4,7 +4,7 @@ pipeline {
     environment {
         DOCKERHUB_CREDENTIALS=credentials('DockerhubCreds')
     }
-    parameters { string description: 'Choose the branch to build', name: 'Branch', trim: true }
+    parameters { string description: 'Choose the branch to build', name: 'Branch', trim: true, default: 'dev' }
     
     stages {
         stage('Clone the repo') {
