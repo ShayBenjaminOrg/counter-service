@@ -78,7 +78,7 @@ pipeline {
         stage('Check website is up') {
             steps {
                 echo 'Check website is up'
-                sh 'curl -Is ec2-54-93-101-39.eu-central-1.compute.amazonaws.com'
+                //sh 'curl -Is ec2-54-93-101-39.eu-central-1.compute.amazonaws.com'
             }
         }
     }
