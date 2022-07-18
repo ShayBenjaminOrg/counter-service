@@ -70,7 +70,7 @@ pipeline {
         stage('Check website is up') {
             steps {
                 echo 'Check website is up'
-                sh(script: "curl -s ec2-54-93-101-39.eu-central-1.compute.amazonaws.com", returnStdout: true).trim()
+                sh returnStdout: true, script: 'curl -s ec2-54-93-101-39.eu-central-1.compute.amazonaws.com'
             }
         }
     }
