@@ -11,7 +11,7 @@ pipeline {
                 sh 'rm -fr counter-service'
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: '*/${env.Branch}']], 
+                    branches: [[name: '*/${Branch}']], 
                     extensions: [], 
                     userRemoteConfigs: [[url: 'https://github.com/ShayBenjaminOrg/counter-service.git']]
                 ])
