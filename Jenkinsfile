@@ -23,14 +23,13 @@ pipeline {
         stage('Build the image') {
             steps {
                 //sh 'sudo su ec2-user'
-                sh 'sleep 10'
                 sh 'docker --version'
                 sh 'whoami'
                 sh 'pwd'
                 sh 'ls -la'
                 echo 'connect to remote host and pull down the latest version'
                 sh 'docker image build -t shayben/counter-service:v1 .'
-                echo 'image built'
+                echo 'image built succeffuly '
                 
 
                 //sh 'ssh ec2-user@10.0.1.197 touch /var/www/html/index_pipe.html'
@@ -66,6 +65,7 @@ pipeline {
                      sh 'whoami'
                      sh 'pwd'
                      sh 'docker login -u ${USERNAME} -p ${PASS} && docker pull shayben/counter-service:v1'
+                     sh 'docker stop counter-service && docker rm counter-service'
                      sh 'docker run -u 0 --name counter-service --rm -p 80:5000 -d shayben/counter-service:v1'
                      
                 }
