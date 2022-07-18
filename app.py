@@ -8,7 +8,7 @@ def index():
     global counter
     if request.method == "POST":
         counter+=1
-        return "Hmm, Plus 1 please "
+        return "Hmmm, Plus 1 please "
     else:
         return str(f"Our counter is: {counter} ")
 if __name__ == '__main__':
