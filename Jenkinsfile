@@ -11,12 +11,12 @@ pipeline {
                 sh 'rm -fr counter-service'
                 checkout([
                     $class: 'GitSCM', 
-                    branches: [[name: '*/${Branch}']], 
+                    branches: [[name: '*/${env.Branch}']], 
                     extensions: [], 
                     userRemoteConfigs: [[url: 'https://github.com/ShayBenjaminOrg/counter-service.git']]
                 ])
                 
-                echo 'GIT_COMMIT ${GIT_COMMIT}'
+                echo 'GIT_COMMIT ${env.GIT_COMMIT}'
                 echo 'GIT_LOCAL_BRANCH ${GIT_LOCAL_BRANCH}'
                 echo 'GIT_PREVIOUS_COMMIT ${GIT_PREVIOUS_COMMIT}'
                 echo 'GIT_URL ${GIT_URL}'
