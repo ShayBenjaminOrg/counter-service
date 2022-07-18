@@ -65,7 +65,7 @@ pipeline {
                      sh 'whoami'
                      sh 'pwd'
                      sh 'docker login -u ${USERNAME} -p ${PASS} && docker pull shayben/counter-service:v1'
-                     sh 'docker stop counter-service && docker rm counter-service'
+                     sh 'docker stop counter-service'
                      sh 'docker run -u 0 --name counter-service --rm -p 80:5000 -d shayben/counter-service:v1'
                      
                 }
